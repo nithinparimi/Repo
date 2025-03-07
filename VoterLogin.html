@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voter Login Page</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            box-sizing: border-box;
+            background: url('images/voter.jpg') no-repeat center center;
+            background-size: cover;
+        }
+        header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #333333;
+            color: white;
+            width: 100%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            font-size: 28px;
+            margin: 0;
+        }
+        .login-container {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        label, select, input {
+            font-size: 18px;
+        }
+        input[type="text"] {
+            padding: 12px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: 300px;
+            text-transform: uppercase;
+        }
+        select {
+            padding: 12px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: 320px;
+        }
+        .image-verification {
+            width: 300px;
+            height: 250px;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            color: #555;
+            background-color: #eaeaea;
+        }
+        .verification-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .verified {
+            color: green;
+        }
+        .not-verified {
+            color: red;
+        }
+        button {
+            padding: 10px 30px;
+            border: none;
+            border-radius: 10px;
+            background-color: #3498db;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+    <script>
+        function updateVerificationStatus(isVerified) {
+            const statusElement = document.getElementById('verificationStatus');
+            if (isVerified) {
+                statusElement.innerHTML = '<span class="verified">Verified ✔️</span>';
+            } else {
+                statusElement.innerHTML = '<span class="not-verified">Not Verified ❌</span>';
+            }
+        }
+        function openCamera() {
+            const imageContainer = document.getElementById('imageContainer');
+            const video = document.createElement('video');
+            video.setAttribute('autoplay', '');
+            video.setAttribute('playsinline', '');
+            imageContainer.innerHTML = '';
+            imageContainer.appendChild(video);
+
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(stream => {
+                    video.srcObject = stream;
+                })
+                .catch(error => {
+                    imageContainer.innerHTML = 'Camera not accessible';
+                    console.error('Error accessing camera:', error);
+                });
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <h1>Voter Login Page</h1>
+    </header>
+    <div class="login-container">
+        <label for="voterId">Enter your Voter ID:</label>
+        <input type="text" id="voterId" name="voterId" placeholder="Voter ID" maxlength="10" pattern="[A-Z0-9]{10}" title="Voter ID must be exactly 10 alphanumeric characters in uppercase." required>
+        <label for="constituency">Select Constituency:</label>
+        <select id="constituency" name="constituency">
+            <option value="">Select Constituency</option>
+            <option value="yelahanka">Yelahanka</option>
+            <option value="hebbal">Hebbal</option>
+            <option value="malleshwaram">Malleshwaram</option>
+            <option value="rajajinagar">Rajajinagar</option>
+            <option value="shantinagar">Shantinagar</option>
+        </select>
+        <div class="image-verification" id="imageContainer" onclick="openCamera()">
+            Click to open camera
+        </div>
+        <div class="verification-status" id="verificationStatus">
+            <span class="not-verified">Not Verified ❌</span>
+        </div>
+        <button onclick="location.href='vote.html'">Login</button>
+    </div>
+</body>
+</html>

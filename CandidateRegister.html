@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Candidate Registration</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom right, #6a11cb, #2575fc);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            box-sizing: border-box;
+        }
+        .container {
+            width: 500px;
+            padding: 30px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            overflow-y: auto;
+            max-height: 90vh;
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            color: #555;
+        }
+        input[type="text"], input[type="date"], input[type="file"], select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
+        button {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            background-color: #2575fc;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background-color: #1b5dc1;
+        }
+        .phone-input {
+            display: flex;
+            align-items: center;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+        .prefix {
+            background-color: #f0f0f0;
+            padding: 10px;
+            border-right: 1px solid #ddd;
+            color: #555;
+            white-space: nowrap;
+        }
+        .phone-input input {
+            border: none;
+            padding: 10px;
+            flex: 1;
+            outline: none;
+        }
+        #partyNameDiv {
+            display: none;
+        }
+    </style>
+    <script>
+        function togglePartyNameInput() {
+            const contestType = document.getElementById('contestType').value;
+            const partyNameDiv = document.getElementById('partyNameDiv');
+            partyNameDiv.style.display = contestType === 'party' ? 'block' : 'none';
+        }
+
+        function allowOnlyNumbers(event) {
+            const keyCode = event.which ? event.which : event.keyCode;
+            if (keyCode < 48 || keyCode > 57) {
+                event.preventDefault();
+            }
+        }
+
+        function validateForm() {
+            const dobInput = document.getElementById('dob');
+            const phoneInput = document.getElementById('phone');
+            const aadharInput = document.getElementById('aadhar');
+
+            if (phoneInput.value.length !== 10) {
+                alert('Phone number must be exactly 10 digits.');
+                phoneInput.focus();
+                return false;
+            }
+
+            if (aadharInput.value.length !== 12) {
+                alert('Aadhaar number must be exactly 12 digits.');
+                aadharInput.focus();
+                return false;
+            }
+
+            if (!isValidAge(dobInput.value)) {
+                dobInput.value = '';
+                return false;
+            }
+
+            // Success confirmation and redirect
+            if (confirm('Your application has been registered successfully! Click OK to continue.')) {
+                window.location.href = 'index.html';
+            }
+            return false; // Prevent default form submission
+        }
+
+        function isValidAge(dob) {
+            const dobDate = new Date(dob);
+            const today = new Date();
+            let age = today.getFullYear() - dobDate.getFullYear();
+            const monthDiff = today.getMonth() - dobDate.getMonth();
+            const dayDiff = today.getDate() - dobDate.getDate();
+
+            if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+                age--;
+            }
+
+            if (age < 24) {
+                alert('Age should be greater than 23.');
+                return false;
+            }
+            return true;
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h2>Candidate Registration</h2>
+        <form onsubmit="return validateForm()">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="gender">Gender:</label>
+            <select id="gender" name="gender" required>
+                <option value="" disabled selected>Select Gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+            </select>
+
+            <label for="dob">Date of Birth:</label>
+            <input type="date" id="dob" name="dob" required onchange="isValidAge(this.value)">
+
+            <label for="phone">Phone Number:</label>
+            <div class="phone-input">
+                <span class="prefix">+91</span>
+                <input type="text" id="phone" name="phone" placeholder="Enter 10-digit phone number" maxlength="10" onkeypress="allowOnlyNumbers(event)" required>
+            </div>
+
+            <label for="aadhar">Aadhaar Number:</label>
+            <input type="text" id="aadhar" name="aadhar" placeholder="Enter 12-digit Aadhaar number" maxlength="12" onkeypress="allowOnlyNumbers(event)" required>
+
+            <label for="constituency">Contesting Constituency:</label>
+            <select id="constituency" name="constituency" required>
+                <option value="" disabled selected>Select Constituency</option>
+                <option value="yelahanka">Yelahanka</option>
+                <option value="hebbal">Hebbal</option>
+                <option value="malleshwaram">Malleshwaram</option>
+                <option value="jayanagar">Jayanagar</option>
+                <option value="btm">BTM Layout</option>
+            </select>
+
+            <label for="contestType">Contest Type:</label>
+            <select id="contestType" name="contestType" onchange="togglePartyNameInput()" required>
+                <option value="" disabled selected>Select Type</option>
+                <option value="independent">Independent</option>
+                <option value="party">Party</option>
+            </select>
+
+            <div id="partyNameDiv">
+                <label for="partyName">Party Name:</label>
+                <input type="text" id="partyName" name="partyName" placeholder="Enter party name">
+            </div>
+
+            <label for="picture">Upload Picture:</label>
+            <input type="file" id="picture" name="picture" accept="image/*" required>
+
+            <label for="symbol">Upload Symbol:</label>
+            <input type="file" id="symbol" name="symbol" accept="image/*" required>
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</body>
+</html>

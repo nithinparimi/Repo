@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voter Registration</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom right, #6a11cb, #2575fc);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            box-sizing: border-box;
+        }
+        .container {
+            width: 500px;
+            padding: 30px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            overflow-y: auto;
+            max-height: 90vh;
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            color: #555;
+        }
+        input[type="text"], input[type="date"], input[type="file"], select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
+        button {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            background-color: #2575fc;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background-color: #1b5dc1;
+        }
+        .phone-input {
+            display: flex;
+            align-items: center;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+        .prefix {
+            background-color: #f0f0f0;
+            padding: 10px;
+            border-right: 1px solid #ddd;
+            color: #555;
+            white-space: nowrap;
+        }
+    </style>
+    <script>
+        function allowOnlyNumbers(event) {
+            const keyCode = event.which ? event.which : event.keyCode;
+            if (keyCode < 48 || keyCode > 57) {
+                event.preventDefault();
+            }
+        }
+
+        function validateForm() {
+            const dobInput = document.getElementById('dob');
+            const phoneInput = document.getElementById('phone');
+            const aadharInput = document.getElementById('aadhar');
+
+            if (phoneInput.value.length !== 10) {
+                alert('Phone number must be exactly 10 digits.');
+                phoneInput.focus();
+                return false;
+            }
+
+            if (aadharInput.value.length !== 12) {
+                alert('Aadhaar number must be exactly 12 digits.');
+                aadharInput.focus();
+                return false;
+            }
+
+            if (!isValidAge(dobInput.value)) {
+                dobInput.value = '';
+                return false;
+            }
+
+            if (confirm('Your application has been registered successfully! Click OK to continue.')) {
+                window.location.href = 'index.html';
+            }
+            return false;
+        }
+
+        function isValidAge(dob) {
+            const dobDate = new Date(dob);
+            const today = new Date();
+            let age = today.getFullYear() - dobDate.getFullYear();
+            const monthDiff = today.getMonth() - dobDate.getMonth();
+            const dayDiff = today.getDate() - dobDate.getDate();
+
+            if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+                age--;
+            }
+
+            if (age < 18) {
+                alert('Age should be greater than 17.');
+                return false;
+            }
+            return true;
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h2>Voter Registration</h2>
+        <form onsubmit="return validateForm()">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="gender">Gender:</label>
+            <select id="gender" name="gender" required>
+                <option value="" disabled selected>Select Gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+            </select>
+
+            <label for="dob">Date of Birth:</label>
+            <input type="date" id="dob" name="dob" required>
+
+            <label for="phone">Phone Number:</label>
+            <div class="phone-input">
+                <span class="prefix">+91</span>
+                <input type="text" id="phone" name="phone" placeholder="10-digit phone number" maxlength="10" onkeypress="allowOnlyNumbers(event)" required>
+            </div>
+
+            <label for="aadhar">Aadhaar Number:</label>
+            <input type="text" id="aadhar" name="aadhar" placeholder="12-digit Aadhaar number" maxlength="12" onkeypress="allowOnlyNumbers(event)" required>
+
+            <label for="voterId">Voter ID:</label>
+            <input type="text" id="voterId" name="voterId" placeholder="10-digit Voter ID (uppercase only)" maxlength="10" oninput="this.value = this.value.toUpperCase()" pattern="[A-Z0-9]{10}" title="Please enter a valid 10-digit Voter ID in uppercase alphanumeric only" required>
+
+            <label for="photo">Upload Photo:</label>
+            <input type="file" id="photo" name="photo" accept="image/*" required>
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</body>
+</html>

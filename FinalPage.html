@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Final Page</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #8e44ad, #3498db);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            box-sizing: border-box;
+            color: white;
+        }
+        header {
+            margin-bottom: 40px;
+        }
+        h1 {
+            font-size: 36px;
+        }
+        .details-container {
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 20px 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+        img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 24px;
+            margin: 10px 0;
+        }
+        footer {
+            width: 100%;
+            padding: 20px;
+            background-color: #333;
+            color: white;
+            position: fixed;
+            bottom: 0;
+            text-align: center;
+            box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
+        }
+        button {
+            padding: 10px 30px;
+            border: none;
+            border-radius: 15px;
+            background-color: #3498db;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        button:hover {
+            background-color: #2980b9;
+            transform: translateY(-3px);
+        }
+    </style>
+    <script>
+        function logout() {
+            alert('You have been logged out.');
+            window.location.href = 'index.html';
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <h1>Thank You for Voting!</h1>
+    </header>
+    <div class="details-container">
+        <img src="images/candidate1.jpg" alt="Candidate Photo">
+        <p><strong>Name/Party:</strong> Candidate Name / Party Name</p>
+        <p><strong>Symbol:</strong> <img src="images/symbol1.png" alt="Symbol" style="width:50px; height:50px;"></p>
+        <p>Your vote has been successfully recorded.</p>
+    </div>
+    <footer>
+        <button onclick="logout()">Logout</button>
+    </footer>
+</body>
+</html>
